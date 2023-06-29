@@ -12,7 +12,11 @@
 #include "RakNetDefines.h"
 #include "RakNetTypes.h"
 #include "RakPeerInterface.h"
+#ifdef _WIN32
 #include "RakSleep.h"
+#else
+#include <unistd.h>
+#endif
 #include "RuntimeVars.h"
 
 #define printf
@@ -81,7 +85,11 @@ void RakServer::RunLoop() {
     RakNet::Packet* p = 0;
     RakNet::SystemAddress clientID;
     while (ctx->running && client->IsActive()) {
+        #ifdef _WIN32
         RakSleep(5);
+        #else
+        usleep(1000)
+        #endif
         while (p = client->Receive()) {
             packetMutex.lock();
             auto jsp = CreateJSPacket(p);
