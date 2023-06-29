@@ -88,7 +88,7 @@ void RakServer::RunLoop() {
         #ifdef _WIN32
         RakSleep(5);
         #else
-        usleep(1000)
+        usleep(1000);
         #endif
         while (p = client->Receive()) {
             packetMutex.lock();
